@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const secret = process.env.SECRET
 
+
+// * create a user
 async function register(req, res) {
   try {
     // check if user already exists
@@ -19,6 +21,7 @@ async function register(req, res) {
   }
 }
 
+// * Log user in
 async function login(req, res) {
   try {
     // confirm user exists by searching via email
@@ -28,10 +31,13 @@ async function login(req, res) {
       throw new Error('No user details found')
     }
     // If above passes, make the user a token
-    const token = jwt.sign({sub: user._id}, secret, {expiresIn: '2 days'})
+    const token = jwt.sign({sub: user._id}, secret)
+    res.cookie('t', token, {expiresIn: '2 days'})
     // Send the users token in response
+    const {_id, name, email, role} = user
     res.status(202).json({
       message: `Welcome back ${user.name}`,
+      user: {_id, name, email, role},
       token
     })
   } catch (err) {
@@ -39,7 +45,16 @@ async function login(req, res) {
   }
 }
 
+
+// * Sign user out
+async function logout(req, res) {
+  res.clearCookie('t')
+  res.json
+  ({message: 'Logout successful'})
+}
+
 module.exports = {
   register,
-  login
+  login,
+  logout
 }
