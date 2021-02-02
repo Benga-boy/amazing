@@ -53,8 +53,19 @@ async function logout(req, res) {
   ({message: 'Logout successful'})
 }
 
+
+//* Admin user middleare
+async function isAdmin(req, res, next) {
+  if (req.currentUser.role === 0) {
+    return res.status(401).json({error: 'Admin resource! Access denied'})
+  }
+
+  next()
+}
+
 module.exports = {
   register,
   login,
-  logout
+  logout,
+  isAdmin,
 }
