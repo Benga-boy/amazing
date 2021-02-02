@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const auth = require('../controllers/auth')
+const user = require('../controllers/user')
+const secureRoute = require('../lib/secureRoute')
 
 
 
@@ -12,6 +14,10 @@ router.route('/login')
 
 router.route('/logout')
 .get(auth.logout)
+
+router.route('/hello')
+.get(secureRoute, user.currentUser)
+
 
 
 
