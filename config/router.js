@@ -1,9 +1,9 @@
 const router = require('express').Router()
 const {register, login, logout, isAdmin} = require('../controllers/auth')
 const user = require('../controllers/user')
-const {createCat} = require('../controllers/category')
+const {createCat, getAllCats, getSingleCat, deleteCat, editCat} = require('../controllers/category')
 const secureRoute = require('../lib/secureRoute')
-const { createProd, getSingleProduct, getAllProducts, deleteProduct } = require('../controllers/product')
+const { createProd, getSingleProduct, getAllProducts, deleteProduct, editProduct } = require('../controllers/product')
 
 
 
@@ -22,6 +22,15 @@ router.route('/logout')
 router.route('/category/create')
 .post(secureRoute, isAdmin, createCat)
 
+router.route('/categories')
+.get(getAllCats)
+
+router.route('/categories/:catId')
+.get(getSingleCat)
+.delete( secureRoute, isAdmin, deleteCat)
+.put(secureRoute, isAdmin, editCat)
+
+
 // ! Products routes
 router.route('/product/create')
 .post(secureRoute, isAdmin, createProd)
@@ -29,10 +38,10 @@ router.route('/product/create')
 router.route('/products')
 .get(getAllProducts)
 
-router.route('/product/:productId')
+router.route('/products/:productId')
 .get(getSingleProduct)
 .delete(secureRoute, isAdmin, deleteProduct)
-
+.put(secureRoute, isAdmin, editProduct)
 
 // // ? Product param
 // router.param('productId', productById)
