@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const connectDB = require('./lib/mongoose')
 const logger = require('./lib/logger')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const router = require('./config/router')
@@ -18,6 +19,8 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 // * Log requests being made to the app
 app.use(logger)
+// * Cors
+app.use(cors())
 
 // * Routes
 app.use('/api', router)
