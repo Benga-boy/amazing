@@ -36,7 +36,7 @@ const LoginForm = ({ handleChange, formData, handleSubmit }) => {
               value={formData.password}
             />
           </FormGroup>
-          {/* {error && <small className="text-danger mb-4 p-2">{error}</small>} */}
+          {/* {err && <small className="text-danger mb-4 p-2">{err}</small>} */}
           <Button className="mt-3" color="warning" outline block>
             Login
           </Button>

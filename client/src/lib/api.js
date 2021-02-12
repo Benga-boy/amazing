@@ -1,6 +1,16 @@
 import axios from 'axios'
+import { removeToken } from './auth'
+// import { getToken } from './auth'
 
 const amazing = '/api'
+
+
+// * Authenticate user permissions
+// const withHeaders = () => {
+//   return {
+//     headers: { Authorization: `Bearer ${getToken()}` },
+//   }
+// }
 
 // ! AUTH
 
@@ -13,3 +23,15 @@ export const register = formData => {
 export const login = formData => {
   return axios.post(`${amazing}/login`, formData)
 }
+
+// * LOGOUT A USER
+export const logout = () => {
+  removeToken()
+  return axios.get(`${amazing}/logout`)
+}
+
+// * GET USERS PROFILE
+export const getProfile = id => {
+  return axios.get(`${amazing}/user/${id}`)
+}
+

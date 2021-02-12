@@ -1,10 +1,24 @@
 import React, { Fragment, useState } from 'react'
-import { login } from '../../lib/api'
+import { useHistory } from 'react-router-dom'
+import { loginUser } from '../../actions/auth'
+import { connect } from 'react-redux'
 import Layout from '../Layout/Layout'
 import LoginForm from './forms/LoginForm'
+import PropTypes from 'prop-types'
 
-const Login = () => {
+const Login = ({ loginUser, isAuth }) => {
   const [formdata, setFormData] = useState({ email: '', password: '' })
+
+
+  // history to push user to homepage
+  const history = useHistory()
+
+
+  // If user is signed in then push them to homepage
+  if (isAuth) {
+    history.push('/')
+  }
+
 
   // * Function to handle the change in formdata
   const handleChange = (e) =>
@@ -13,13 +27,8 @@ const Login = () => {
   // * Function to handle login submission
   const handleSubmit = async (e) => {
     e.preventDefault()
-    try {
-      const res = await login(formdata)
-      setFormData({ email: '', password: '' })
-      console.log(res)
-    } catch (err) {
-      console.log(err)
-    }
+    loginUser(formdata)
+    setFormData({ email: '', password: '' })
   }
 
   return (
@@ -35,4 +44,13 @@ const Login = () => {
   )
 }
 
-export default Login
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool,
+}
+
+const mapStateToProps = state => ({
+  isAuth: state.auth.isAuth,
+})
+
+export default connect(mapStateToProps, { loginUser })(Login)

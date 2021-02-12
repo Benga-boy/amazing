@@ -1,13 +1,18 @@
 import React, { Fragment, useState } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, useHistory, withRouter } from 'react-router-dom'
 import {
   Collapse,
   Container,
   Nav,
   Navbar,
   NavbarToggler,
+  NavLink,
   NavItem
 } from 'reactstrap'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { logoutUser } from '../../actions/auth'
+
 
 // Function to set active link
 const isActive = (history, path) => {
@@ -18,16 +23,27 @@ const isActive = (history, path) => {
   }
 }
 
-const NavbarTop = ({ history }) => {
+const NavbarTop = ({ history, logoutUser, auth: { isAuth } }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
+
+  const redirect = useHistory()
+
+  // * Function to logout
+  const userLogout = async () => {
+    logoutUser()
+    redirect.push('/login')
+  }
+
 
   return (
     <Fragment>
       <Navbar expand="sm" dark={true} color="dark" className="mt-0">
         <Container>
-          <Link className="navbar-brand" to="/">Amazing</Link>
+          <Link className="navbar-brand" to="/">
+            Amazing
+          </Link>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
@@ -46,8 +62,8 @@ const NavbarTop = ({ history }) => {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link to="/services" className="nav-link">
-                  Services
+                <Link to="/dashboard" className="nav-link">
+                  Dashboard
                 </Link>
               </NavItem>
               <NavItem>
@@ -55,7 +71,7 @@ const NavbarTop = ({ history }) => {
                   Contact
                 </Link>
               </NavItem>
-              <NavItem>
+              {!isAuth && <NavItem>
                 <Link
                   to="/login"
                   className="nav-link"
@@ -63,7 +79,12 @@ const NavbarTop = ({ history }) => {
                 >
                   Login
                 </Link>
-              </NavItem>
+              </NavItem>}
+              {isAuth && <NavItem>
+                <NavLink style={{ 'cursor': 'pointer' }} onClick={userLogout}>
+                  Logout
+                </NavLink>
+              </NavItem>}
             </Nav>
           </Collapse>
         </Container>
@@ -72,4 +93,13 @@ const NavbarTop = ({ history }) => {
   )
 }
 
-export default withRouter(NavbarTop)
+NavbarTop.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+})
+
+export default connect(mapStateToProps, { logoutUser })(withRouter(NavbarTop))

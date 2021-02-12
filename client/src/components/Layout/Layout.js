@@ -19,7 +19,7 @@ const Layout = ({ title, description, children }) => {
 Layout.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
 }
 
 export default Layout
