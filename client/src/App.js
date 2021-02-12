@@ -8,10 +8,13 @@ import Dashboard from './components/users/Dashboard'
 import Login from './components/users/Login'
 import Register from './components/users/Register'
 import SecureRoute from './lib/SecureRouter'
+import AdminRoute from './lib/AdminRoute'
 
 // Redux
 import { Provider } from 'react-redux'
 import store from './store'
+import AdminDashboard from './components/admin/AdminDashboard'
+import CreateCategory from './components/admin/category/CreateCategory'
 
 const App = () => {
 
@@ -25,7 +28,9 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-          <SecureRoute exact path="/dashboard" component={Dashboard} />
+          <SecureRoute exact path="/user/dashboard" component={Dashboard} />
+          <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+          <AdminRoute exact path="/create/category" component={CreateCategory} />
         </Switch>
       </BrowserRouter>
     </Provider>

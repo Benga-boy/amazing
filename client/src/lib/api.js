@@ -1,16 +1,16 @@
 import axios from 'axios'
 import { removeToken } from './auth'
-// import { getToken } from './auth'
+import { getToken } from './auth'
 
 const amazing = '/api'
 
 
 // * Authenticate user permissions
-// const withHeaders = () => {
-//   return {
-//     headers: { Authorization: `Bearer ${getToken()}` },
-//   }
-// }
+const withHeaders = () => {
+  return {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  }
+}
 
 // ! AUTH
 
@@ -33,5 +33,14 @@ export const logout = () => {
 // * GET USERS PROFILE
 export const getProfile = id => {
   return axios.get(`${amazing}/user/${id}`)
+}
+
+
+
+// ! CATEGORIES
+
+// * CREAT A CATEGORY
+export const createCategory = name => {
+  return axios.post(`${amazing}/category/create`, name, withHeaders())
 }
 

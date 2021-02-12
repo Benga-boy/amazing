@@ -6,7 +6,7 @@ import Layout from '../Layout/Layout'
 import LoginForm from './forms/LoginForm'
 import PropTypes from 'prop-types'
 
-const Login = ({ loginUser, isAuth }) => {
+const Login = ({ loginUser, isAuth, user }) => {
   const [formdata, setFormData] = useState({ email: '', password: '' })
 
 
@@ -14,11 +14,12 @@ const Login = ({ loginUser, isAuth }) => {
   const history = useHistory()
 
 
-  // If user is signed in then push them to homepage
-  if (isAuth) {
-    history.push('/')
+  // If user is signed in and not admin then push them to homepage else push to admin dashboard
+  if (isAuth && user.role === 0) {
+    history.push('/user/dashboard')
+  } else if (isAuth && user.role === 1) {
+    history.push('/admin/dashboard')
   }
-
 
   // * Function to handle the change in formdata
   const handleChange = (e) =>
@@ -51,6 +52,7 @@ Login.propTypes = {
 
 const mapStateToProps = state => ({
   isAuth: state.auth.isAuth,
+  user: state.auth.user,
 })
 
 export default connect(mapStateToProps, { loginUser })(Login)

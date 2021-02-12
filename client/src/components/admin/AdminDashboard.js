@@ -1,36 +1,35 @@
 import React, { Fragment } from 'react'
 import { Card, CardHeader, Col, ListGroup, ListGroupItem, Row } from 'reactstrap'
-import Layout from '../Layout/Layout'
 import { connect } from 'react-redux'
+import Layout from '../Layout/Layout'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
+const AdminDashboard = ({ auth: { user: { name, email, role } } })=> {
 
-const Dashboard = ({ auth: { user: { name, email, role } } }) => {
 
-
-  // * Users Links
-  const userLinks = () => {
+  // * Admin Links
+  const adminLinks = () => {
     return (
-      <Card className="mt-4">
+      <Card>
         <CardHeader>User Links</CardHeader>
         <ListGroup>
           <ListGroupItem>
-            <Link className="nav-link" to="/cart">My Cart</Link>
+            <Link className="nav-link" to="/create/category">Create Category</Link>
           </ListGroupItem>
           <ListGroupItem>
-            <Link className="nav-link" to="/profile/update">Profile Update</Link>
+            <Link className="nav-link" to="/create/product">Create Product</Link>
           </ListGroupItem>
         </ListGroup>
       </Card>
     )
   }
-
-  // * Users Info
-  const userInfo = () => {
+  
+  // * Admin Info
+  const adminInfo = () => {
     return (
       <Fragment>
-        <Card className="w-75 m-auto">
+        <Card className="m-auto">
           <CardHeader>User Information</CardHeader>
           <ListGroup>
             <ListGroupItem>Name:  {name} </ListGroupItem>
@@ -41,31 +40,17 @@ const Dashboard = ({ auth: { user: { name, email, role } } }) => {
       </Fragment>
     )
   }
-
-
-  // * Purchase histories
-  const purchaseHistory = () => {
-    return (
-      <Card className="w-75 m-auto">
-        <CardHeader>Purchase History</CardHeader>
-        <ListGroup>
-          <ListGroupItem>Name: </ListGroupItem>
-        </ListGroup>
-      </Card>
-    )
-  }
-
+  
 
   return (
     <Fragment>
       <Layout title={`${name.split(' ')[0]}'s Dashboard`} description="Welcome to your dashboard">
         <Row>
           <Col lg="3" md="3">
-            {userLinks()}
+            {adminLinks()}
           </Col>
           <Col lg="9" md="9">
-            {userInfo()}
-            {purchaseHistory()}
+            {adminInfo()}
           </Col>
         </Row>
       </Layout>
@@ -73,7 +58,7 @@ const Dashboard = ({ auth: { user: { name, email, role } } }) => {
   )
 }
 
-Dashboard.propTypes = {
+AdminDashboard.propTypes = {
   auth: PropTypes.object.isRequired,
 }
 
@@ -81,4 +66,4 @@ const mapStateToProps = state => ({
   auth: state.auth,
 })
 
-export default connect(mapStateToProps, null)(Dashboard)
+export default connect(mapStateToProps, null)(AdminDashboard)

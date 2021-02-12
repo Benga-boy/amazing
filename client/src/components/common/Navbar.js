@@ -23,7 +23,7 @@ const isActive = (history, path) => {
   }
 }
 
-const NavbarTop = ({ history, logoutUser, auth: { isAuth } }) => {
+const NavbarTop = ({ history, logoutUser, auth: { isAuth, user } }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
@@ -61,11 +61,14 @@ const NavbarTop = ({ history, logoutUser, auth: { isAuth } }) => {
                   About Us
                 </Link>
               </NavItem>
-              <NavItem>
-                <Link to="/dashboard" className="nav-link">
+              { isAuth && user.role === 0 && <NavItem>
+                <Link style={isActive(history, '/user/dashboard')} to="/user/dashboard" className="nav-link">
                   Dashboard
                 </Link>
-              </NavItem>
+              </NavItem>}
+              {isAuth && user.role === 1 && <NavItem>
+                <Link style={isActive(history, '/admin/dashboard')} to="/admin/dashboard" className="nav-link">Admin Dashboard</Link>
+              </NavItem>}
               <NavItem>
                 <Link to="/blog" className="nav-link">
                   Contact
